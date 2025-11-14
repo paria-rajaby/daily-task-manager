@@ -7,6 +7,8 @@ body{
     line-height: 1.6;
     font-size: 1.6rem;
     font-family:  VazirReular;
+    background-color: #DFE7FD;
+    padding: 4rem;
 }
 *,
 *::after,
@@ -14,3 +16,109 @@ body{
     outline: none;
     box-sizing: inherit;
 }
+svg{
+    width: 3rem;
+    height: 3rem;
+}
+.topSection{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;   
+}
+.topSection span{
+    font-family: VazirBold;  
+}
+.middleSection{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-top: 5rem;
+}
+.taskwrapper{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 2px solid #BEE1E6;
+    padding: 1rem;
+    border-radius: 2rem;
+    background-color: #E2ECE9;
+}
+.iconswrapper svg{
+ transition: all 200ms ease-in;
+}
+.iconswrapper svg:hover{
+ transform: scale(1.1);
+}
+.bottomSection{
+    position: fixed;
+    bottom: 2rem;
+    right: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+.bottomSection input{
+    width: 80%;
+    padding: 2rem;
+    border: none;
+    border-radius: 2rem;
+    font-family: VazirBold;
+}
+.bottomSection button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+    border: none;
+    height: 56px;
+    width: 56px;
+    background-color: white;
+    color: #800080 ;
+    transition: all 200ms ease-in;
+}
+.bottomSection button:hover{
+   transform: scale(1.1);
+}
+
+@media (max-width : 768px) {  
+    .middleSection{
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+@media (max-width : 480px) {  
+    .bottomSection input{
+        height: 4rem;
+    }
+    .bottomSection button{
+        height: 4rem;
+        width: 4rem;
+    }
+    .bottomSection button svg{
+        height: 2rem;
+        width: 2rem;
+    }
+}
+
+
+/* red
+#FAD2E1 border
+#FDE2E4 bg  */
+
+
+/* 
+purple
+DFE7FD */
+
+
+/* green
+#BEE1E6
+#E2ECE9 */
+
+
+
+/* yellow
+#f9df74
+#f9edcc */
