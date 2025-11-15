@@ -1,0 +1,57 @@
+const taskInput = document.querySelector("#task-input");
+const addTaskBtn = document.querySelector("#addtask_btn");
+
+const addTask = async () => {
+  if (taskInput.value.length === 0) {
+    return Swal.fire({
+      title: "خطا !",
+      text: "لطفا تسک مورد نظر را تایپ کن",
+      icon: "error",
+      confirmButtonText: "باشه",
+
+      //   چجوری متوقفش کنم
+    });
+  }
+  const { value: importance } = await Swal.fire({
+    title: "اهمیت این کار چقدره؟",
+    input: "radio",
+    inputOptions: {
+      low: "کم",
+      medium: "متوسط",
+      high: "زیاد",
+    },
+    confirmButtonText: "ثبت",
+    inputValidator: (value) => {
+      if (!value) return "باید یکی رو انتخاب کنی!";
+    },
+  });
+  if (!importance) return;
+
+  let taskData = {
+    tasks: taskInput.value,
+    important: importance,
+  };
+
+  const response = await fetch(
+    "https://jfzvtwhwbdgyxhfravtw.supabase.co/rest/v1/tasks",
+    {
+      method: "POST",
+      headers: {
+        apikey:
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpmenZ0d2h3YmRneXhoZnJhdnR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMyMDk2NDIsImV4cCI6MjA3ODc4NTY0Mn0.zgpUGVmygCnXOkVjYVrBnknlaXWR9LiuJDWHpZmkQtI",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpmenZ0d2h3YmRneXhoZnJhdnR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMyMDk2NDIsImV4cCI6MjA3ODc4NTY0Mn0.zgpUGVmygCnXOkVjYVrBnknlaXWR9LiuJDWHpZmkQtI",
+        "Content-Type": "application/json",
+        Prefer: "return=representation",
+      },
+      body: JSON.stringify(taskData),
+    }
+  );
+
+  const data = await response.json();
+  console.log("Task added:", data);
+
+  taskInput.value = "";
+};
+
+addTaskBtn.addEventListener("click", addTask);
