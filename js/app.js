@@ -1,5 +1,7 @@
 const taskInput = document.querySelector("#task-input");
 const addTaskBtn = document.querySelector("#addtask_btn");
+const tasksContainer = document.querySelector(".middleSection");
+const taskWrapper = document.querySelector(".taskwrapper");
 
 const addTask = async () => {
   if (taskInput.value.length === 0) {
@@ -8,8 +10,6 @@ const addTask = async () => {
       text: "لطفا تسک مورد نظر را تایپ کن",
       icon: "error",
       confirmButtonText: "باشه",
-
-      //   چجوری متوقفش کنم
     });
   }
   const { value: importance } = await Swal.fire({
@@ -49,9 +49,47 @@ const addTask = async () => {
   );
 
   const data = await response.json();
-  console.log("Task added:", data);
+  getTasks();
 
   taskInput.value = "";
 };
+const getTasks = async () => {
+  const response = await fetch(
+    "https://jfzvtwhwbdgyxhfravtw.supabase.co/rest/v1/tasks?select=*",
+    {
+      method: "GET",
+      headers: {
+        apikey:
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpmenZ0d2h3YmRneXhoZnJhdnR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMyMDk2NDIsImV4cCI6MjA3ODc4NTY0Mn0.zgpUGVmygCnXOkVjYVrBnknlaXWR9LiuJDWHpZmkQtI",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpmenZ0d2h3YmRneXhoZnJhdnR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMyMDk2NDIsImV4cCI6MjA3ODc4NTY0Mn0.zgpUGVmygCnXOkVjYVrBnknlaXWR9LiuJDWHpZmkQtI",
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const data = await response.json();
 
+  tasksContainer.innerHTML = "";
+
+  data.forEach((task) => {
+    const divHTML = `
+    <div class="taskwrapper">
+      <p class="tasktext">${task.tasks}</p>
+      <div class="iconswrapper">
+          <svg><use href="#edit"></use></svg>
+          <svg><use href="#trash"></use></svg>
+      </div>
+    </div>
+    `;
+    tasksContainer.insertAdjacentHTML("beforeend", divHTML);
+
+    const newTaskDiv = tasksContainer.lastElementChild;
+    if (task.important === "low") newTaskDiv.classList.add("low");
+    else if (task.important === "medium") newTaskDiv.classList.add("medium");
+    else newTaskDiv.classList.add("high");
+  });
+};
 addTaskBtn.addEventListener("click", addTask);
+window.addEventListener("load", () => {
+  getTasks();
+});
