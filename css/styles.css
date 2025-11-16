@@ -20,33 +20,19 @@ svg{
     width: 3rem;
     height: 3rem;
 }
+
+
 .loading{
- 
-}
-.loading::before,
-.loading::after {    
-  content: "";
-  grid-area: 1/1;
-  margin: 2px;
-  border: inherit;
+    display: none;
+  margin: 10rem auto;
+  width: 50px;
+  aspect-ratio: 1;
   border-radius: 50%;
+  border: 8px solid #9d4edd;
+  border-right-color: #e0aaff;
+  animation: l2 1s infinite linear;
 }
-.loading::before {
-  border-color: #f03355 #0000;
-  animation: inherit; 
-  animation-duration: .5s;
-  animation-direction: reverse;
-}
-.loading::after {
-  margin: 8px;
-}
-@keyframes l16 { 
-  100%{transform: rotate(1turn)}
-}
-
-
-
-
+@keyframes l2 {to{transform: rotate(1turn)}}
 
 .low{
      border: 2px solid #BEE1E6;
