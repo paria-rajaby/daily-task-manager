@@ -54,8 +54,10 @@ const addTask = async () => {
   taskInput.value = "";
 };
 const getTasks = async () => {
+  const loading = document.querySelector(".loading");
+  loading.style.display = "block";
   const response = await fetch(
-    "https://jfzvtwhwbdgyxhfravtw.supabase.co/rest/v1/tasks?select=*",
+    "https://jfzvtwhwbdgyxhfravtw.supabase.co/rest/v1/tasks?select=*&order=created_at.asc",
     {
       method: "GET",
       headers: {
@@ -67,12 +69,23 @@ const getTasks = async () => {
       },
     }
   );
+
   const data = await response.json();
 
   tasksContainer.innerHTML = "";
 
-  data.forEach((task) => {
-    const divHTML = `
+  if (data.length == 0) {
+    tasksContainer.insertAdjacentHTML(
+      "beforeend",
+      `
+        <div class="taskwrapper">
+          <span>تسکی برای نمایش وجود ندارد !</span>
+        </div>
+      `
+    );
+  } else {
+    data.forEach((task) => {
+      const divHTML = `
     <div class="taskwrapper">
       <p class="tasktext">${task.tasks}</p>
       <div class="iconswrapper">
@@ -81,13 +94,15 @@ const getTasks = async () => {
       </div>
     </div>
     `;
-    tasksContainer.insertAdjacentHTML("beforeend", divHTML);
+      tasksContainer.insertAdjacentHTML("beforeend", divHTML);
 
-    const newTaskDiv = tasksContainer.lastElementChild;
-    if (task.important === "low") newTaskDiv.classList.add("low");
-    else if (task.important === "medium") newTaskDiv.classList.add("medium");
-    else newTaskDiv.classList.add("high");
-  });
+      const newTaskDiv = tasksContainer.lastElementChild;
+      if (task.important === "low") newTaskDiv.classList.add("low");
+      else if (task.important === "medium") newTaskDiv.classList.add("medium");
+      else newTaskDiv.classList.add("high");
+    });
+  }
+  loading.style.display = "none";
 };
 
 const removeTask = async (taskID) => {
@@ -150,6 +165,7 @@ const editTask = async (taskID, oldTaskText) => {
         body: JSON.stringify({ tasks: newTaskText }),
       }
     );
+    getTasks();
   }
 };
 addTaskBtn.addEventListener("click", addTask);

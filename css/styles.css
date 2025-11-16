@@ -20,6 +20,32 @@ svg{
     width: 3rem;
     height: 3rem;
 }
+.loading{
+ 
+}
+.loading::before,
+.loading::after {    
+  content: "";
+  grid-area: 1/1;
+  margin: 2px;
+  border: inherit;
+  border-radius: 50%;
+}
+.loading::before {
+  border-color: #f03355 #0000;
+  animation: inherit; 
+  animation-duration: .5s;
+  animation-direction: reverse;
+}
+.loading::after {
+  margin: 8px;
+}
+@keyframes l16 { 
+  100%{transform: rotate(1turn)}
+}
+
+
+
 
 
 .low{
@@ -54,6 +80,10 @@ svg{
     justify-content: space-between;
     padding: 1rem;
     border-radius: 2rem;
+}
+.taskwrapper span{
+    margin: auto;
+    color: gray;
 }
 .iconswrapper button{
     border: none;
