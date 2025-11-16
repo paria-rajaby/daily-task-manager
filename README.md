@@ -5,6 +5,10 @@ This project allows users to create, edit, delete, and categorize tasks based on
 
 ---
 
+## 💻 Demo
+
+Check out the live version of the project here: [View Site](https://paria-rajaby.github.io/daily-task-manager/)
+
 ## 🚀 Features
 
 - ➕ Add new tasks
