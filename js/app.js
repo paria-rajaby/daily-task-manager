@@ -104,7 +104,6 @@ const getTasks = async () => {
   }
   loading.style.display = "none";
 };
-
 const removeTask = async (taskID) => {
   const result = await Swal.fire({
     text: "ایا از حذف این تسک اطمینان دارید ؟",
@@ -168,7 +167,18 @@ const editTask = async (taskID, oldTaskText) => {
     getTasks();
   }
 };
+const showTime = () => {
+  const time = document.querySelector("#time");
+  const now = new Date();
+  const hours = now.getHours().toString().padStart(2, 0);
+  const minutes = now.getMinutes().toString().padStart(2, 0);
+  const seconds = now.getSeconds().toString().padStart(2, 0);
+
+  time.innerHTML = `${hours}:${minutes}:${seconds}`;
+};
+setInterval(showTime, 1000);
 addTaskBtn.addEventListener("click", addTask);
 window.addEventListener("load", () => {
+  showTime();
   getTasks();
 });
