@@ -55,6 +55,10 @@ svg{
     padding: 1rem;
     border-radius: 2rem;
 }
+.iconswrapper button{
+    border: none;
+    background-color: transparent;
+}
 .iconswrapper svg{
  transition: all 200ms ease-in;
 }

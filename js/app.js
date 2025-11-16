@@ -76,8 +76,8 @@ const getTasks = async () => {
     <div class="taskwrapper">
       <p class="tasktext">${task.tasks}</p>
       <div class="iconswrapper">
-          <svg><use href="#edit"></use></svg>
-          <svg><use href="#trash"></use></svg>
+          <button  onclick = "editTask('${task.id}' , '${task.tasks}')"><svg><use href="#edit"></use></svg></button>
+          <button onclick = "removeTask('${task.id}')"><svg><use href="#trash"></use></svg></button>
       </div>
     </div>
     `;
@@ -88,6 +88,69 @@ const getTasks = async () => {
     else if (task.important === "medium") newTaskDiv.classList.add("medium");
     else newTaskDiv.classList.add("high");
   });
+};
+
+const removeTask = async (taskID) => {
+  const result = await Swal.fire({
+    text: "ایا از حذف این تسک اطمینان دارید ؟",
+    icon: "warning",
+    showCancelButton: true,
+    cancelButtonText: "خیر",
+    confirmButtonColor: "#BEE1E6",
+    cancelButtonColor: "#f3999f",
+    confirmButtonText: "بله",
+  });
+
+  if (!result.isConfirmed) return;
+
+  const response = await fetch(
+    `https://jfzvtwhwbdgyxhfravtw.supabase.co/rest/v1/tasks?id=eq.${taskID}`,
+    {
+      method: "DELETE",
+      headers: {
+        apikey:
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpmenZ0d2h3YmRneXhoZnJhdnR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMyMDk2NDIsImV4cCI6MjA3ODc4NTY0Mn0.zgpUGVmygCnXOkVjYVrBnknlaXWR9LiuJDWHpZmkQtI",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpmenZ0d2h3YmRneXhoZnJhdnR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMyMDk2NDIsImV4cCI6MjA3ODc4NTY0Mn0.zgpUGVmygCnXOkVjYVrBnknlaXWR9LiuJDWHpZmkQtI",
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  Swal.fire({
+    text: "تسک با موفقیت پاک شد .",
+    icon: "success",
+  });
+  getTasks();
+};
+const editTask = async (taskID, oldTaskText) => {
+  const { value: newTaskText } = await Swal.fire({
+    title: "ویرایش تسک",
+    input: "text",
+    inputValue: oldTaskText,
+    confirmButtonText: "تایید",
+    showCancelButton: true,
+    cancelmButtonText: "لغو",
+  });
+  if (!newTaskText) return;
+
+  if (oldTaskText !== newTaskText) {
+    const response = await fetch(
+      `https://jfzvtwhwbdgyxhfravtw.supabase.co/rest/v1/tasks?id=eq.${taskID}`,
+      {
+        method: "PATCH",
+        headers: {
+          apikey:
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpmenZ0d2h3YmRneXhoZnJhdnR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMyMDk2NDIsImV4cCI6MjA3ODc4NTY0Mn0.zgpUGVmygCnXOkVjYVrBnknlaXWR9LiuJDWHpZmkQtI",
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpmenZ0d2h3YmRneXhoZnJhdnR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMyMDk2NDIsImV4cCI6MjA3ODc4NTY0Mn0.zgpUGVmygCnXOkVjYVrBnknlaXWR9LiuJDWHpZmkQtI",
+          "Content-Type": "application/json",
+          Prefer: "return=representation",
+        },
+        body: JSON.stringify({ tasks: newTaskText }),
+      }
+    );
+  }
 };
 addTaskBtn.addEventListener("click", addTask);
 window.addEventListener("load", () => {
