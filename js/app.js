@@ -134,6 +134,7 @@ const removeTask = async (taskID) => {
   Swal.fire({
     text: "تسک با موفقیت پاک شد .",
     icon: "success",
+    confirmButtonText: "باشه",
   });
   getTasks();
 };
